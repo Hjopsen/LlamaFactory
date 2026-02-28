@@ -738,5 +738,47 @@
       "prompt": "content"
     },
     "folder": "python"
+  },
+  "MMFineReason-1.8M-Qwen3-VL-235B-Thinking": {
+    "hf_hub_url": "/data/data/MMFineReason-1.8M-Qwen3-VL-235B-Thinking",
+    "split": "sft",
+    "formatting": "alpaca",
+    "columns": {
+      "prompt": "question",
+      "response": "qwen3vl_235b_thinking_response",
+      "images": "image"
+    }
+  },
+  "MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking": {
+    "hf_hub_url": "/data/data/MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking",
+    "split": "train",
+    "formatting": "alpaca",
+    "columns": {
+      "prompt": "question",
+      "response": "qwen3vl_235b_thinking_response",
+      "images": "image"
+    }
+  },
+  "MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-10%": {
+    "hf_hub_url": "/data/data/MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking",
+    "split": "train",
+    "formatting": "alpaca",
+    "num_samples": 58574,
+    "columns": {
+      "prompt": "question",
+      "response": "qwen3vl_235b_thinking_response",
+      "images": "image"
+    }
+  },
+  "MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-20%": {
+    "hf_hub_url": "/data/data/MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking",
+    "split": "train",
+    "formatting": "alpaca",
+    "num_samples": 117148,
+    "columns": {
+      "prompt": "question",
+      "response": "qwen3vl_235b_thinking_response",
+      "images": "image"
+    }
   }
 }
