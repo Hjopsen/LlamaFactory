@@ -3,6 +3,8 @@ model_name_or_path: /data/model_weights/ConceptQwen3-VL-2B-RandomInit
 image_max_pixels: 262144
 video_max_pixels: 16384
 trust_remote_code: true
+conceptmodel_initialize_perceiver_weights: true
+conceptmodel_initialize_query_embedding_model: true
 
 ### method
 stage: sft
@@ -15,15 +17,15 @@ deepspeed: examples/deepspeed/ds_z2_config.json
 
 ### dataset
 dataset: MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-10%
-template: qwen3_vl # thinking
+template: qwen3_vl_concept # thinking
 cutoff_len: 12800
-max_samples: 1024 # 9999999999 debug
+max_samples: 9999999999 # debug
 preprocessing_num_workers: 32
-dataloader_num_workers: 16
+dataloader_num_workers: 32
 
 ### output
-output_dir: saves/qwen3-vl-2b-thinking/MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-10%/full/sft
-logging_steps: 20
+output_dir: saves/conceptqwen3-vl-2b-thinking/MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-10%/full/sft
+logging_steps: 10
 save_steps: 5000
 plot_loss: true
 overwrite_output_dir: true

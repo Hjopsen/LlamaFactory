@@ -538,6 +538,16 @@ class ModelArguments(
         init=False,
         metadata={"help": "Whether use block diag attention or not, derived from `neat_packing`. Do not specify it."},
     )
+    conceptmodel_initialize_perceiver_weights: bool = field(
+        default=False,
+        init=True,
+        metadata={"help": "Whether random init perceiver"}
+    )
+    conceptmodel_initialize_query_embedding_model: bool = field(
+        default=False,
+        init=True,
+        metadata={"help": "Whether init query_embedding"}
+    )
 
     def __post_init__(self):
         BaseModelArguments.__post_init__(self)

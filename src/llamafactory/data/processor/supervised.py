@@ -111,6 +111,14 @@ class SupervisedDatasetProcessor(DatasetProcessor):
             model_inputs["images"].append(examples["_images"][i])
             model_inputs["videos"].append(examples["_videos"][i])
             model_inputs["audios"].append(examples["_audios"][i])
+            
+            current_prompt = examples["_prompt"][i]
+            last_user_query = ""
+            for msg in reversed(current_prompt):
+                if msg["role"] == "user":
+                    last_user_query = msg["content"]
+                    break
+            model_inputs['text_query'].append([last_user_query]*len(examples["_images"][i]))
 
         return model_inputs
 

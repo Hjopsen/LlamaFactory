@@ -39,10 +39,6 @@ from .model_utils.unsloth import load_unsloth_pretrained_model
 from .model_utils.valuehead import load_valuehead_params
 from .patcher import patch_config, patch_model, patch_processor, patch_tokenizer, patch_valuehead_model
 
-import sys
-sys.path.append('../model')
-from ConceptQwen3vl import ConceptQwen3VL
-
 if TYPE_CHECKING:
     from transformers import PretrainedConfig, PreTrainedModel, PreTrainedTokenizer, ProcessorMixin
 
@@ -214,6 +210,14 @@ def load_model(
                 "Please downgrade torch to <2.9 or remove Conv3D. "
                 "See https://github.com/pytorch/pytorch/issues/166122"
             )
+    
+    # NOTE ConceptModel custom
+    # FIXME two stage training
+    if hasattr(model, "initialize_perceiver_weights") and model_args.conceptmodel_initialize_perceiver_weights:
+        model.initialize_perceiver_weights()
+
+    if hasattr(model, "init_query_embedding_model") and model_args.conceptmodel_initialize_query_embedding_model:
+        model.init_query_embedding_model()
 
     if not is_trainable:
         model.requires_grad_(False)

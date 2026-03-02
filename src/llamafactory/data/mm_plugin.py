@@ -1731,6 +1731,53 @@ class Qwen3VLPlugin(Qwen2VLPlugin):
 
 
 @dataclass
+class ConceptQwen3VLPlugin(Qwen3VLPlugin):
+
+    def process_messages(
+        self,
+        messages: list[dict[str, str]],
+        images: list["ImageInput"],
+        videos: list["VideoInput"],
+        audios: list["AudioInput"],
+        processor: Optional["MMProcessor"],
+    ) -> list[dict[str, str]]:
+        # 1. 验证输入（保留官方校验）
+        self._validate_input(processor, images, videos, audios)
+        
+        # 2. 深度拷贝消息，避免修改原始数据
+        messages = deepcopy(messages)
+        
+        # 3. 获取自定义的 token 数量
+        num_concept_tokens = getattr(processor, "num_concept_tokens", 16)
+        
+        # 4. 【核心改动】在调用父类逻辑前，先手动把图片占位符“吃掉”
+        # 这样 super().process_messages 就不会再处理图片，只会处理视频和音频
+        for message in messages:
+            content = message["content"]
+            while IMAGE_PLACEHOLDER in content:
+                # 构造固定的占位序列：<|vision_start|> + <|image_pad|> * 16 + <|vision_end|>
+                # 注意：此处使用 self 继承自父类的 vision_bos_token 和 image_token 属性
+                placeholder = (
+                    f"{self.vision_bos_token}"
+                    f"{self.image_token * num_concept_tokens}"
+                    f"{self.vision_eos_token}"
+                )
+                content = content.replace(IMAGE_PLACEHOLDER, placeholder, 1)
+            message["content"] = content
+
+        # 5. 调用父类方法处理剩余部分（如视频、音频的复杂逻辑）
+        # 此时 messages 中的 IMAGE_PLACEHOLDER 已经消失，父类只会处理视频和音频
+        # 我们传入已经处理过图片的 messages
+        return super().process_messages(
+            messages=messages,
+            images=[],  # 传空列表，防止父类再次尝试处理图片导致索引错误
+            videos=videos,
+            audios=audios,
+            processor=processor
+        )
+    
+
+@dataclass
 class GLM4VPlugin(Qwen2VLPlugin):
     @override
     def _get_mm_inputs(
@@ -2216,6 +2263,7 @@ PLUGINS = {
     "qwen3_vl": Qwen3VLPlugin,
     "video_llava": VideoLlavaPlugin,
     "youtu_vl": YoutuVLPlugin,
+    "qwen3_vl_concept": ConceptQwen3VLPlugin
 }
 
 
