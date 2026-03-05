@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 uv run llamafactory-cli webchat custom_scripts/qwen3vl.yaml

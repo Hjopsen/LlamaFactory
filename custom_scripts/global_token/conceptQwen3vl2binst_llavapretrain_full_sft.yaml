@@ -1,5 +1,5 @@
 ### model
-model_name_or_path: /data/model_weights/ConceptQwen3-VL-2B-RandomInit
+model_name_or_path: /data/model_weights/ConceptQwen3-VL-2B-inst-RandomInit
 image_max_pixels: 262144
 video_max_pixels: 16384
 trust_remote_code: true
@@ -15,15 +15,15 @@ freeze_language_model: false        # 冻结 LLM
 deepspeed: examples/deepspeed/ds_z2_config.json
 
 ### dataset
-dataset: MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-10%
-template: qwen3_vl_concept # thinking
+dataset: llava_pretrain
+template: qwen3_vl_nothink_concept # no thinking
 cutoff_len: 12800
-max_samples: 15 # debug
+max_samples: 99999999999 # debug
 preprocessing_num_workers: 32
 dataloader_num_workers: 32
 
 ### output
-output_dir: saves/conceptqwen3-vl-2b-thinking/MMFineReason-SFT-586K-Qwen3-VL-235B-Thinking-10%/full/sft-0304
+output_dir: saves/conceptqwen3-vl-2b-inst/llavapretrain/full/sft-0304
 logging_steps: 10
 save_steps: 5000
 plot_loss: true
@@ -32,10 +32,10 @@ save_only_model: false
 report_to: wandb  # choices: [none, wandb, tensorboard, swanlab, mlflow]
 
 ### train # 8 gpus, batch_size=2, gradient_accumulation_steps=8, effective_batch_size=128
-per_device_train_batch_size: 2
-gradient_accumulation_steps: 8
+per_device_train_batch_size: 16
+gradient_accumulation_steps: 1
 learning_rate: 2.0e-5
-num_train_epochs: 1.0
+num_train_epochs: 2.0
 lr_scheduler_type: cosine
 warmup_ratio: 0.1
 bf16: true

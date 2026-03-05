@@ -780,5 +780,19 @@
       "response": "qwen3vl_235b_thinking_response",
       "images": "image"
     }
+  },
+  "llava_pretrain": {
+    "file_name": "/data/data/LLaVA-Pretrain/blip_laion_cc_sbu_558k_llamafactory.json",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages",
+      "images": "images"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant"
+    }
   }
 }

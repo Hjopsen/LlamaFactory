@@ -213,12 +213,20 @@ def load_model(
     
     # NOTE ConceptModel custom
     # FIXME two stage training
-    if hasattr(model, "initialize_perceiver_weights") and model_args.conceptmodel_initialize_perceiver_weights:
-        model.initialize_perceiver_weights()
+    # if hasattr(model, "initialize_perceiver_weights") and model_args.conceptmodel_initialize_perceiver_weights:
+    #     model.initialize_perceiver_weights()
 
-    if hasattr(model, "init_query_embedding_model") and model_args.conceptmodel_initialize_query_embedding_model:
+    # if hasattr(model, "init_query_embedding_model") and model_args.conceptmodel_initialize_query_embedding_model:
+    #     model.init_query_embedding_model()
+    
+    if hasattr(model, "init_query_embedding_model"):
         model.init_query_embedding_model()
-
+    
+    model.requires_grad_(False)
+    for name, param in model.named_parameters():
+        if "concept_perceiver" in name:
+            param.requires_grad = True
+            
     if not is_trainable:
         model.requires_grad_(False)
         model.eval()
